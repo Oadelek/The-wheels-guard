@@ -1,7 +1,7 @@
 package com.wheelsguard.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 
 public class Sale {
     private int saleID;
@@ -35,7 +35,7 @@ public class Sale {
         this.productID = productID;
     }
 
-    public Date getSaleDate() {
+    public java.sql.Date getSaleDate() {
         return saleDate;
     }
 

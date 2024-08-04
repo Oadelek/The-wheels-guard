@@ -1,6 +1,6 @@
 package com.wheelsguard.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class UserProfile {
     private int userProfileID;

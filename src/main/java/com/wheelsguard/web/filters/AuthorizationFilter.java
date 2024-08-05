@@ -12,9 +12,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Set;
 
-//@WebFilter("/*")
+@WebFilter("/*")
 public class AuthorizationFilter implements Filter {
-    //private RoleService roleService = new RoleService();
+    private RoleService roleService = new RoleService(true);
+
+    public AuthorizationFilter() throws SQLException {
+    }
 
 
     @Override
@@ -39,11 +42,11 @@ public class AuthorizationFilter implements Filter {
     }
 
     private boolean hasPermission(User user, String requestURI) {
+        return true;
         //Set<String> userPermissions = roleService.getUserPermissions(user.getUserID());
         // Implement logic to check if the user has permission to access the requestURI
         // This is a simplified example, you should implement more robust logic
         //return userPermissions.contains(getRequiredPermission(requestURI));
-        return false;
     }
 
     private String getRequiredPermission(String requestURI) {

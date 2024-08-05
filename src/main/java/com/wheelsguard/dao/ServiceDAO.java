@@ -3,6 +3,7 @@ package com.wheelsguard.dao;
 
 import com.wheelsguard.model.Service;
 import com.wheelsguard.util.DatabaseUtil;
+import com.wheelsguard.util.Utility;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -54,13 +55,21 @@ public class ServiceDAO {
 
     public List<Service> getUpcomingServices(int limit) throws SQLException {
         List<Service> services = new ArrayList<>();
-        String sql = "SELECT ServiceID, CustomerID, ProductID, ServiceType, ServiceDate, ServiceCost " +
-                "FROM Services " +
-                "WHERE ServiceDate > CURRENT_TIMESTAMP " +
-                "ORDER BY ServiceDate ASC LIMIT ?";
+        String sql;
+
+        if (Utility.IS_MY_SQL) {
+            sql = "SELECT ServiceID, CustomerID, ProductID, ServiceType, ServiceDate, ServiceCost " +
+                    "FROM Services " +
+                    "WHERE ServiceDate > CURRENT_TIMESTAMP " +
+                    "ORDER BY ServiceDate ASC LIMIT ?";
+        } else {
+            sql = "SELECT TOP (?) ServiceID, CustomerID, ProductID, ServiceType, ServiceDate, ServiceCost " +
+                    "FROM Services " +
+                    "WHERE ServiceDate > CURRENT_TIMESTAMP " +
+                    "ORDER BY ServiceDate ASC";
+        }
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-
             stmt.setInt(1, limit);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {

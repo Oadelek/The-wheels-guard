@@ -3,6 +3,7 @@ package com.wheelsguard.web.controller;
 import com.wheelsguard.service.DashboardService;
 import com.wheelsguard.model.DashboardData;
 import com.wheelsguard.service.UserService;
+import com.wheelsguard.util.Utility;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +15,18 @@ import java.sql.SQLException;
 
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
-    private DashboardService mysqlDashboardService = new DashboardService(true);
-    private DashboardService serversqlDashboardService = new DashboardService(false);
+    private DashboardService mysqlDashboardService ;
+    //private DashboardService serversqlDashboardService;
 
-    public DashboardServlet() throws SQLException {
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        try {
+            // Choose database to use
+            this.mysqlDashboardService = new DashboardService(Utility.IS_MY_SQL);
+        } catch (SQLException e) {
+            throw new ServletException("Error initializing DashboardService", e);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

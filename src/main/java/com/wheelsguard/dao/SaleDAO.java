@@ -2,6 +2,7 @@ package com.wheelsguard.dao;
 
 import com.wheelsguard.model.Sale;
 import com.wheelsguard.util.DatabaseUtil;
+import com.wheelsguard.util.Utility;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 
 public class SaleDAO {
     private Connection connection;
+    private boolean isMySQL;
 
     public SaleDAO(boolean isMySQL) throws SQLException {
         if (isMySQL) {
@@ -53,12 +55,19 @@ public class SaleDAO {
 
     public List<Sale> getRecentSales(int limit) throws SQLException {
         List<Sale> sales = new ArrayList<>();
-        String sql = "SELECT s.SaleID, s.CustomerID, s.ProductID, s.SaleDate, s.Quantity, s.TotalPrice " +
-                "FROM Sales s " +
-                "ORDER BY s.SaleDate DESC LIMIT ?";
+        String sql;
+
+        if (Utility.IS_MY_SQL) {
+            sql = "SELECT s.SaleID, s.CustomerID, s.ProductID, s.SaleDate, s.Quantity, s.TotalPrice " +
+                    "FROM Sales s " +
+                    "ORDER BY s.SaleDate DESC LIMIT ?";
+        } else {
+            sql = "SELECT TOP (?) s.SaleID, s.CustomerID, s.ProductID, s.SaleDate, s.Quantity, s.TotalPrice " +
+                    "FROM Sales s " +
+                    "ORDER BY s.SaleDate DESC";
+        }
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-
             stmt.setInt(1, limit);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {

@@ -3,6 +3,7 @@ package com.wheelsguard.web.controller;
 
 import com.wheelsguard.model.User;
 import com.wheelsguard.service.UserService;
+import com.wheelsguard.util.Utility;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
@@ -16,9 +17,11 @@ import java.util.Random;
 
 @WebServlet("/initialize")
 public class InitializationServlet extends HttpServlet {
-    private UserService mysqlUserService = new UserService(true);
+    private UserService mysqlUserService;
 
     public InitializationServlet() throws SQLException {
+        super();
+        this.mysqlUserService = new UserService(Utility.IS_MY_SQL);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

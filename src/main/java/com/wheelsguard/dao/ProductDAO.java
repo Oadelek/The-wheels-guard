@@ -60,7 +60,6 @@ public class ProductDAO {
                 "ORDER BY QuantityInStock ASC";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-
             stmt.setInt(1, threshold);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {

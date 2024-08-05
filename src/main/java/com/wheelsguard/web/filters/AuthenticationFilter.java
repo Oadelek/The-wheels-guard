@@ -1,6 +1,8 @@
 package com.wheelsguard.web.filters;
 
 import com.wheelsguard.model.User;
+import com.wheelsguard.service.ActivityLogService;
+import com.wheelsguard.service.UserService;
 import com.wheelsguard.service.UserSessionService;
 
 import javax.servlet.*;
@@ -9,10 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 
-//@WebFilter("/*") // Filter all requests
+@WebFilter("/*") // Filter all requests
 public class AuthenticationFilter implements Filter {
-    //private UserSessionService userSessionService = new UserSessionService();
+    private UserSessionService userSessionService = new UserSessionService(true);
+
+    public AuthenticationFilter() throws SQLException {
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

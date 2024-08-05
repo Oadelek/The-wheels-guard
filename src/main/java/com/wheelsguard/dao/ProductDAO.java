@@ -52,6 +52,32 @@ public class ProductDAO {
         return null;
     }
 
+    public List<Product> getLowStockProducts(int threshold) throws SQLException {
+        List<Product> products = new ArrayList<>();
+        String sql = "SELECT ProductID, Name, ManufacturerID, CategoryID, Price, QuantityInStock " +
+                "FROM Products " +
+                "WHERE QuantityInStock < ? " +
+                "ORDER BY QuantityInStock ASC";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, threshold);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Product product = new Product();
+                    product.setProductID(rs.getInt("ProductID"));
+                    product.setName(rs.getString("Name"));
+                    product.setManufacturerID(rs.getInt("ManufacturerID"));
+                    product.setCategoryID(rs.getInt("CategoryID"));
+                    product.setPrice(rs.getBigDecimal("Price"));
+                    product.setQuantityInStock(rs.getInt("QuantityInStock"));
+                    products.add(product);
+                }
+            }
+        }
+        return products;
+    }
+
     public List<Product> getAll() throws SQLException {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM Products";

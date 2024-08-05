@@ -52,6 +52,32 @@ public class ServiceDAO {
         return null;
     }
 
+    public List<Service> getUpcomingServices(int limit) throws SQLException {
+        List<Service> services = new ArrayList<>();
+        String sql = "SELECT ServiceID, CustomerID, ProductID, ServiceType, ServiceDate, ServiceCost " +
+                "FROM Services " +
+                "WHERE ServiceDate > CURRENT_TIMESTAMP " +
+                "ORDER BY ServiceDate ASC LIMIT ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, limit);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Service service = new Service();
+                    service.setServiceID(rs.getInt("ServiceID"));
+                    service.setCustomerID(rs.getInt("CustomerID"));
+                    service.setProductID(rs.getInt("ProductID"));
+                    service.setServiceType(rs.getString("ServiceType"));
+                    service.setServiceDate(rs.getDate("ServiceDate"));
+                    service.setServiceCost(rs.getBigDecimal("ServiceCost"));
+                    services.add(service);
+                }
+            }
+        }
+        return services;
+    }
+
     public List<Service> getAll() throws SQLException {
         List<Service> services = new ArrayList<>();
         String query = "SELECT * FROM Services";

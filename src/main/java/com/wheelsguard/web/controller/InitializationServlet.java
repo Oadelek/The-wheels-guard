@@ -3,37 +3,47 @@ package com.wheelsguard.web.controller;
 
 import com.wheelsguard.model.User;
 import com.wheelsguard.service.UserService;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Random;
 
 @WebServlet("/initialize")
 public class InitializationServlet extends HttpServlet {
-    private UserService userService = new UserService();
+    private UserService mysqlUserService = new UserService(true);
+
+    public InitializationServlet() throws SQLException {
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (userService.getAllUsers().isEmpty()) {
-            User superAdmin = new User();
-            superAdmin.setUsername("superadmin");
-            superAdmin.setEmail("superadmin@example.com");
-            String tempPassword = generateTempPassword();
+        try {
+            if (mysqlUserService.getAllUsers().isEmpty()) {
+                User superAdmin = new User();
+                superAdmin.setUsername("superadmin");
+                superAdmin.setEmail("superadmin@example.com");
+                String tempPassword = generateTempPassword();
 
-            // Hash the temporary password before storing it
-            String hashedPassword = BCrypt.hashpw(tempPassword, BCrypt.gensalt());
-            superAdmin.setPasswordHash(hashedPassword);
+                // Hash the temporary password before storing it
+                String hashedPassword = BCrypt.hashpw(tempPassword, BCrypt.gensalt());
+                superAdmin.setPasswordHash(hashedPassword);
 
-            superAdmin.setRole(Role.SUPER_ADMIN);
+                superAdmin.setUserRole(UserService.SUPER_ADMIN_ROLE);
 
-            userService.createUser(superAdmin);
+                mysqlUserService.addUser(superAdmin);
 
-            response.getWriter().println("Super Admin created. Username: superadmin, Temporary Password: " + tempPassword);
-            response.getWriter().println("Please change this password upon first login.");
-        } else {
-            response.getWriter().println("System already initialized.");
+                response.getWriter().println("Super Admin created. Username: superadmin, Email: superadmin@example.com, Temporary Password: " + tempPassword);
+                response.getWriter().println("Please change this password upon first login.");
+            } else {
+                response.getWriter().println("System already initialized.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

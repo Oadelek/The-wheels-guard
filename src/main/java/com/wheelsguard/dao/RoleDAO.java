@@ -45,6 +45,20 @@ public class RoleDAO {
         return null;
     }
 
+    public int getRoleIDByRoleName(String roleName) throws SQLException {
+        String query = "SELECT RoleID FROM Roles WHERE RoleName = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, roleName);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("RoleID");
+                } else {
+                    throw new SQLException("Role with name " + roleName + " not found.");
+                }
+            }
+        }
+    }
+
     public List<Role> getAll() throws SQLException {
         List<Role> roles = new ArrayList<>();
         String query = "SELECT * FROM Roles";

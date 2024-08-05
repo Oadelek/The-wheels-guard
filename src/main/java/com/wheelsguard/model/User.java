@@ -1,6 +1,7 @@
 package com.wheelsguard.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class User {
     private int userID;
@@ -11,7 +12,10 @@ public class User {
     private String lastName;
     private Timestamp dateCreated;
     private Timestamp lastLoginDate;
+    private String userRole;
     private boolean isActive;
+    private List<String> permissions;
+    private List<String> roles;
 
     public int getUserID() {
         return userID;
@@ -77,11 +81,42 @@ public class User {
         this.lastLoginDate = lastLoginDate;
     }
 
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
     public boolean isActive() {
         return isActive;
     }
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    public boolean hasPermission(String permission) {
+        if (permissions == null) {
+            return false;
+        }
+        return permissions.contains(permission);
     }
 }

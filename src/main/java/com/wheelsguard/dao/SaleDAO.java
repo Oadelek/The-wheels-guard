@@ -51,6 +51,31 @@ public class SaleDAO {
         return null;
     }
 
+    public List<Sale> getRecentSales(int limit) throws SQLException {
+        List<Sale> sales = new ArrayList<>();
+        String sql = "SELECT s.SaleID, s.CustomerID, s.ProductID, s.SaleDate, s.Quantity, s.TotalPrice " +
+                "FROM Sales s " +
+                "ORDER BY s.SaleDate DESC LIMIT ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, limit);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Sale sale = new Sale();
+                    sale.setSaleID(rs.getInt("SaleID"));
+                    sale.setCustomerID(rs.getInt("CustomerID"));
+                    sale.setProductID(rs.getInt("ProductID"));
+                    sale.setSaleDate(rs.getDate("SaleDate"));
+                    sale.setQuantity(rs.getInt("Quantity"));
+                    sale.setTotalPrice(rs.getBigDecimal("TotalPrice"));
+                    sales.add(sale);
+                }
+            }
+        }
+        return sales;
+    }
+
     public List<Sale> getAll() throws SQLException {
         List<Sale> sales = new ArrayList<>();
         String query = "SELECT * FROM Sales";

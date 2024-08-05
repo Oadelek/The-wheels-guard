@@ -1,6 +1,9 @@
 package com.wheelsguard.service;
 
 import com.wheelsguard.dao.ActivityLogDAO;
+import com.wheelsguard.dao.RoleDAO;
+import com.wheelsguard.dao.UserDAO;
+import com.wheelsguard.dao.UserRoleDAO;
 import com.wheelsguard.model.ActivityLog;
 
 import java.sql.SQLException;
@@ -8,7 +11,12 @@ import java.sql.*;
 import java.util.List;
 
 public class ActivityLogService {
-    private ActivityLogDAO activityLogDAO = new ActivityLogDAO();
+    private ActivityLogDAO activityLogDAO;
+
+    public ActivityLogService(boolean isMySQL) throws SQLException {
+        activityLogDAO = new ActivityLogDAO(isMySQL);
+    }
+
 
     public void logActivity(int userID, String activityType, String description) {
         ActivityLog log = new ActivityLog();

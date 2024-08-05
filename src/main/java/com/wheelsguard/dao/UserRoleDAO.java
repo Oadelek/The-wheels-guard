@@ -19,11 +19,10 @@ public class UserRoleDAO {
     }
 
     public void insert(UserRole userRole) throws SQLException {
-        String query = "INSERT INTO UserRoles (UserRoleID, UserID, RoleID) VALUES (?, ?, ?)";
+        String query = "INSERT INTO UserRoles (UserID, RoleID) VALUES (?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userRole.getUserRoleID());
-            stmt.setInt(2, userRole.getUserID());
-            stmt.setInt(3, userRole.getRoleID());
+            stmt.setInt(1, userRole.getUserID());
+            stmt.setInt(2, userRole.getRoleID());
             stmt.executeUpdate();
         }
     }
@@ -78,5 +77,46 @@ public class UserRoleDAO {
             stmt.executeUpdate();
         }
     }
+
+    public List<String> getPermissionsByUserId(int userId) throws SQLException {
+        List<String> permissions = new ArrayList<>();
+        String query = "SELECT DISTINCT p.PermissionName " +
+                "FROM UserRoles ur " +
+                "JOIN RolePermissions rp ON ur.RoleID = rp.RoleID " +
+                "JOIN Permissions p ON rp.PermissionID = p.PermissionID " +
+                "WHERE ur.UserID = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    permissions.add(rs.getString("PermissionName"));
+                }
+            }
+        }
+        return permissions;
+    }
+
+    public List<String> getRoleNamesByUserId(int userId) throws SQLException {
+        List<String> roleNames = new ArrayList<>();
+        String query = "SELECT r.RoleName " +
+                "FROM UserRoles ur " +
+                "JOIN Roles r ON ur.RoleID = r.RoleID " +
+                "WHERE ur.UserID = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    roleNames.add(rs.getString("RoleName"));
+                }
+            }
+        }
+        return roleNames;
+    }
+
+
 }
 

@@ -148,6 +148,15 @@ public class UserDAO {
         }
     }
 
+    public boolean deactivateUser(int userId) throws SQLException {
+        String query = "UPDATE Users SET IsActive = false WHERE UserID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+        }
+    }
+
     public void updateLastLoginDate(int userId, Timestamp lastLoginDate) throws SQLException {
         String query = "UPDATE Users SET LastLoginDate = ? WHERE UserID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {

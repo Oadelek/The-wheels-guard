@@ -19,10 +19,9 @@ public class CategoryDAO {
     }
 
     public void insert(Category category) throws SQLException {
-        String query = "INSERT INTO Categories (CategoryID, Name) VALUES (?, ?)";
+        String query = "INSERT INTO Categories (Name) VALUES (?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, category.getCategoryID());
-            stmt.setString(2, category.getName());
+            stmt.setString(1, category.getName());
             stmt.executeUpdate();
         }
     }

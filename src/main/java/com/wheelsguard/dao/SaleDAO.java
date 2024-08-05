@@ -21,14 +21,13 @@ public class SaleDAO {
     }
 
     public void insert(Sale sale) throws SQLException {
-        String query = "INSERT INTO Sales (SaleID, CustomerID, ProductID, SaleDate, Quantity, TotalPrice) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Sales (CustomerID, ProductID, SaleDate, Quantity, TotalPrice) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, sale.getSaleID());
-            stmt.setInt(2, sale.getCustomerID());
-            stmt.setInt(3, sale.getProductID());
-            stmt.setDate(4, sale.getSaleDate());
-            stmt.setInt(5, sale.getQuantity());
-            stmt.setBigDecimal(6, sale.getTotalPrice());
+            stmt.setInt(1, sale.getCustomerID());
+            stmt.setInt(2, sale.getProductID());
+            stmt.setDate(3, sale.getSaleDate());
+            stmt.setInt(4, sale.getQuantity());
+            stmt.setBigDecimal(5, sale.getTotalPrice());
             stmt.executeUpdate();
         }
     }

@@ -29,13 +29,11 @@ public class UserService {
         userRoleDAO = new UserRoleDAO(isMySQL);
     }
 
-    public void addUser(User user) throws SQLException {
+    public void addUser(User user, int roleId) throws SQLException {
         int userID = userDAO.insert(user);
-        int roleID = roleDAO.getRoleIDByRoleName(user.getUserRole());
-
         UserRole userRole = new UserRole();
         userRole.setUserID(userID);
-        userRole.setRoleID(roleID);
+        userRole.setRoleID(roleId);
         userRoleDAO.insert(userRole);
     }
 
@@ -57,7 +55,11 @@ public class UserService {
     }
 
     public User getUser(int userID) throws SQLException {
-        return userDAO.get(userID);
+        User user = userDAO.get(userID);
+        if (user != null) {
+            user.setUserRole(getUserRoleName(userID));
+        }
+        return user;
     }
 
     public List<User> getAllUsers() throws SQLException {
@@ -78,5 +80,14 @@ public class UserService {
 
     public void deleteUser(int userID) throws SQLException {
         userDAO.delete(userID);
+    }
+
+    public boolean deactivateUser(int userId) throws Exception {
+        return userDAO.deactivateUser(userId);
+    }
+
+    public String getUserRoleName(int userId) throws SQLException {
+        List<String> roles = userRoleDAO.getRoleNamesByUserId(userId);
+        return roles.isEmpty() ? null : roles.get(0);
     }
 }

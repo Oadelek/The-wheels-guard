@@ -18,20 +18,21 @@ public class CustomerDAO {
         }
     }
 
-    public void insert(Customer customer) throws SQLException {
-        String query = "INSERT INTO Customers (CustomerID, FirstName, LastName, Address, PhoneNumber, Email) VALUES (?, ?, ?, ?, ?, ?)";
+    public void insert(Customer customer) {
+        String query = "INSERT INTO Customers (FirstName, LastName, Address, PhoneNumber, Email) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, customer.getCustomerID());
-            stmt.setString(2, customer.getFirstName());
-            stmt.setString(3, customer.getLastName());
-            stmt.setString(4, customer.getAddress());
-            stmt.setString(5, customer.getPhoneNumber());
-            stmt.setString(6, customer.getEmail());
+            stmt.setString(1, customer.getFirstName());
+            stmt.setString(2, customer.getLastName());
+            stmt.setString(3, customer.getAddress());
+            stmt.setString(4, customer.getPhoneNumber());
+            stmt.setString(5, customer.getEmail());
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQL Error in insert: " + e.getMessage());
         }
     }
 
-    public Customer get(int customerID) throws SQLException {
+    public Customer get(int customerID) {
         String query = "SELECT * FROM Customers WHERE CustomerID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, customerID);
@@ -47,11 +48,13 @@ public class CustomerDAO {
                     return customer;
                 }
             }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in get: " + e.getMessage());
         }
         return null;
     }
 
-    public List<Customer> getAll() throws SQLException {
+    public List<Customer> getAll() {
         List<Customer> customers = new ArrayList<>();
         String query = "SELECT * FROM Customers";
         try (Statement stmt = connection.createStatement();
@@ -66,11 +69,13 @@ public class CustomerDAO {
                 customer.setEmail(rs.getString("Email"));
                 customers.add(customer);
             }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getAll: " + e.getMessage());
         }
         return customers;
     }
 
-    public void update(Customer customer) throws SQLException {
+    public void update(Customer customer) {
         String query = "UPDATE Customers SET FirstName = ?, LastName = ?, Address = ?, PhoneNumber = ?, Email = ? WHERE CustomerID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, customer.getFirstName());
@@ -80,15 +85,18 @@ public class CustomerDAO {
             stmt.setString(5, customer.getEmail());
             stmt.setInt(6, customer.getCustomerID());
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQL Error in update: " + e.getMessage());
         }
     }
 
-    public void delete(int customerID) throws SQLException {
+    public void delete(int customerID) {
         String query = "DELETE FROM Customers WHERE CustomerID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, customerID);
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQL Error in delete: " + e.getMessage());
         }
     }
 }
-

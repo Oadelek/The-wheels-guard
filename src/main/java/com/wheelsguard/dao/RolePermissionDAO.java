@@ -19,11 +19,10 @@ public class RolePermissionDAO {
     }
 
     public void insert(RolePermission rolePermission) throws SQLException {
-        String query = "INSERT INTO RolePermissions (RolePermissionID, RoleID, PermissionID) VALUES (?, ?, ?)";
+        String query = "INSERT INTO RolePermissions (RoleID, PermissionID) VALUES (?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, rolePermission.getRolePermissionID());
-            stmt.setInt(2, rolePermission.getRoleID());
-            stmt.setInt(3, rolePermission.getPermissionID());
+            stmt.setInt(1, rolePermission.getRoleID());
+            stmt.setInt(2, rolePermission.getPermissionID());
             stmt.executeUpdate();
         }
     }

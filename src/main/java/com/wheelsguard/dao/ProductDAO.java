@@ -20,14 +20,13 @@ public class ProductDAO {
     }
 
     public void insert(Product product) throws SQLException {
-        String query = "INSERT INTO Products (ProductID, Name, ManufacturerID, CategoryID, Price, QuantityInStock) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Products (Name, ManufacturerID, CategoryID, Price, QuantityInStock) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, product.getProductID());
-            stmt.setString(2, product.getName());
-            stmt.setInt(3, product.getManufacturerID());
-            stmt.setInt(4, product.getCategoryID());
-            stmt.setBigDecimal(5, product.getPrice());
-            stmt.setInt(6, product.getQuantityInStock());
+            stmt.setString(1, product.getName());
+            stmt.setInt(2, product.getManufacturerID());
+            stmt.setInt(3, product.getCategoryID());
+            stmt.setBigDecimal(4, product.getPrice());
+            stmt.setInt(5, product.getQuantityInStock());
             stmt.executeUpdate();
         }
     }

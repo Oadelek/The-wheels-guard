@@ -21,14 +21,13 @@ public class ServiceDAO {
     }
 
     public void insert(Service service) throws SQLException {
-        String query = "INSERT INTO Services (ServiceID, CustomerID, ProductID, ServiceType, ServiceDate, ServiceCost) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Services (CustomerID, ProductID, ServiceType, ServiceDate, ServiceCost) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, service.getServiceID());
-            stmt.setInt(2, service.getCustomerID());
-            stmt.setInt(3, service.getProductID());
-            stmt.setString(4, service.getServiceType());
-            stmt.setDate(5, service.getServiceDate());
-            stmt.setBigDecimal(6, service.getServiceCost());
+            stmt.setInt(1, service.getCustomerID());
+            stmt.setInt(2, service.getProductID());
+            stmt.setString(3, service.getServiceType());
+            stmt.setDate(4, service.getServiceDate());
+            stmt.setBigDecimal(5, service.getServiceCost());
             stmt.executeUpdate();
         }
     }

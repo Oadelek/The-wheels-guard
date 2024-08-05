@@ -38,7 +38,7 @@ public class InitializationServlet extends HttpServlet {
 
                 superAdmin.setUserRole(UserService.SUPER_ADMIN_ROLE);
 
-                mysqlUserService.addUser(superAdmin);
+                mysqlUserService.addUser(superAdmin, 1);
 
                 response.getWriter().println("Super Admin created. Username: superadmin, Email: superadmin@example.com, Temporary Password: " + tempPassword);
                 response.getWriter().println("Please change this password upon first login.");

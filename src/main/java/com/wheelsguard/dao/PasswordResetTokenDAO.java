@@ -19,12 +19,11 @@ public class PasswordResetTokenDAO {
     }
 
     public void insert(PasswordResetToken token) throws SQLException {
-        String query = "INSERT INTO PasswordResetTokens (TokenID, UserID, Token, ExpiryDate) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO PasswordResetTokens (UserID, Token, ExpiryDate) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, token.getTokenID());
-            stmt.setInt(2, token.getUserID());
-            stmt.setString(3, token.getToken());
-            stmt.setTimestamp(4, token.getExpiryDate());
+            stmt.setInt(1, token.getUserID());
+            stmt.setString(2, token.getToken());
+            stmt.setTimestamp(3, token.getExpiryDate());
             stmt.executeUpdate();
         }
     }

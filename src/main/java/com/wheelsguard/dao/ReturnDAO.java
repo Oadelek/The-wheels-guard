@@ -19,12 +19,11 @@ public class ReturnDAO {
     }
 
     public void insert(Return returnObj) throws SQLException {
-        String query = "INSERT INTO Returns (ReturnID, SaleID, ReturnDate, ReturnReason) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Returns (SaleID, ReturnDate, ReturnReason) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, returnObj.getReturnID());
-            stmt.setInt(2, returnObj.getSaleID());
-            stmt.setDate(3, returnObj.getReturnDate());
-            stmt.setString(4, returnObj.getReturnReason());
+            stmt.setInt(1, returnObj.getSaleID());
+            stmt.setDate(2, returnObj.getReturnDate());
+            stmt.setString(3, returnObj.getReturnReason());
             stmt.executeUpdate();
         }
     }

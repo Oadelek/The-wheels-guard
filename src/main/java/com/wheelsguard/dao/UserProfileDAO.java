@@ -19,14 +19,13 @@ public class UserProfileDAO {
     }
 
     public void insert(UserProfile userProfile) throws SQLException {
-        String query = "INSERT INTO UserProfiles (UserProfileID, UserID, Address, PhoneNumber, DateOfBirth, ProfilePicture) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO UserProfiles (UserID, Address, PhoneNumber, DateOfBirth, ProfilePicture) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userProfile.getUserProfileID());
-            stmt.setInt(2, userProfile.getUserID());
-            stmt.setString(3, userProfile.getAddress());
-            stmt.setString(4, userProfile.getPhoneNumber());
-            stmt.setDate(5, userProfile.getDateOfBirth());
-            stmt.setBytes(6, userProfile.getProfilePicture());
+            stmt.setInt(1, userProfile.getUserID());
+            stmt.setString(2, userProfile.getAddress());
+            stmt.setString(3, userProfile.getPhoneNumber());
+            stmt.setDate(4, userProfile.getDateOfBirth());
+            stmt.setBytes(5, userProfile.getProfilePicture());
             stmt.executeUpdate();
         }
     }

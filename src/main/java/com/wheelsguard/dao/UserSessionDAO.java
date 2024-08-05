@@ -19,14 +19,13 @@ public class UserSessionDAO {
     }
 
     public void insert(UserSession userSession) throws SQLException {
-        String query = "INSERT INTO UserSessions (SessionID, UserID, SessionToken, LoginTime, LogoutTime, IsActive) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO UserSessions (UserID, SessionToken, LoginTime, LogoutTime, IsActive) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userSession.getSessionID());
-            stmt.setInt(2, userSession.getUserID());
-            stmt.setString(3, userSession.getSessionToken());
-            stmt.setTimestamp(4, userSession.getLoginTime());
-            stmt.setTimestamp(5, userSession.getLogoutTime());
-            stmt.setBoolean(6, userSession.isActive());
+            stmt.setInt(1, userSession.getUserID());
+            stmt.setString(2, userSession.getSessionToken());
+            stmt.setTimestamp(3, userSession.getLoginTime());
+            stmt.setTimestamp(4, userSession.getLogoutTime());
+            stmt.setBoolean(5, userSession.isActive());
             stmt.executeUpdate();
         }
     }

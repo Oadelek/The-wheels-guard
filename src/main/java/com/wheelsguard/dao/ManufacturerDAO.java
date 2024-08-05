@@ -19,10 +19,9 @@ public class ManufacturerDAO {
     }
 
     public void insert(Manufacturer manufacturer) throws SQLException {
-        String query = "INSERT INTO Manufacturers (ManufacturerID, Name) VALUES (?, ?)";
+        String query = "INSERT INTO Manufacturers (Name) VALUES (?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, manufacturer.getManufacturerID());
-            stmt.setString(2, manufacturer.getName());
+            stmt.setString(1, manufacturer.getName());
             stmt.executeUpdate();
         }
     }

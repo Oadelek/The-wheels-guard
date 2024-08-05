@@ -2,7 +2,6 @@ package com.wheelsguard.web.controller;
 
 import com.wheelsguard.service.DashboardService;
 import com.wheelsguard.model.DashboardData;
-import com.wheelsguard.service.UserService;
 import com.wheelsguard.util.Utility;
 
 import javax.servlet.ServletException;

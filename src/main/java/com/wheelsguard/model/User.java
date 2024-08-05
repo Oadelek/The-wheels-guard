@@ -16,6 +16,7 @@ public class User {
     private boolean isActive;
     private List<String> permissions;
     private List<String> roles;
+    private int roleID;
 
     public int getUserID() {
         return userID;
@@ -118,5 +119,13 @@ public class User {
             return false;
         }
         return permissions.contains(permission);
+    }
+
+    public int getRoleID() {
+        return roleID;
+    }
+
+    public void setRoleID(int roleID) {
+        this.roleID = roleID;
     }
 }

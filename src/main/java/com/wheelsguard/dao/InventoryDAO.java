@@ -20,12 +20,11 @@ public class InventoryDAO {
     }
 
     public void insert(Inventory inventory) throws SQLException {
-        String query = "INSERT INTO Inventory (InventoryID, ProductID, ReceivedDate, QuantityReceived) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Inventory (ProductID, ReceivedDate, QuantityReceived) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, inventory.getInventoryID());
-            stmt.setInt(2, inventory.getProductID());
-            stmt.setDate(3, inventory.getReceivedDate());
-            stmt.setInt(4, inventory.getQuantityReceived());
+            stmt.setInt(1, inventory.getProductID());
+            stmt.setDate(2, inventory.getReceivedDate());
+            stmt.setInt(3, inventory.getQuantityReceived());
             stmt.executeUpdate();
         }
     }
